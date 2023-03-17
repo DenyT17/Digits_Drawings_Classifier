@@ -1,7 +1,10 @@
 import pickle
 import os.path
+import tkinter
+
 import numpy as np
 import PIL
+import PIL.Image,PIL.ImageDraw
 import cv2 as cv
 
 from tkinter import *
@@ -76,7 +79,47 @@ class EmoticonClassifier:
             os.mkdir(self.class4)
             os.chdir("...")
     def initialize_gui(self):
-        pass
+        width = 750
+        height = 750
+        canvas_width = 700
+        canvas_height = 700
+        white = (255,255,255)
 
-daniel = EmoticonClassifier()
-daniel
+        self.root = Tk()
+        self.root.title(f"EMOTICONS DRAWINGS CLASSIFIER v0.1 - {self.project_name}")
+
+        self.canvas = Canvas(self.root,
+                             width=canvas_width,
+                             height=canvas_height,
+                             background="white")
+        self.canvas.pack(expand=True,fill=BOTH)
+        self.canvas.bind("<B1-Motion>",self.paint)
+
+        self.image1 = PIL.Image.new("RGB",(width,height),white)
+        self.draw = PIL.ImageDraw.Draw(self.image1)
+
+        btn_frame = tkinter.Frame(self.root)
+        btn_frame.pack(fill=X,side=BOTTOM)
+
+        btn_frame.columnconfigure(0,weight=1)
+        btn_frame.columnconfigure(1,weight=1)
+        btn_frame.columnconfigure(2,weight=1)
+        btn_frame.columnconfigure(3,weight=1)
+
+        class1_btn = Button(btn_frame, text=self.class1, command=lambda: self.save(1))
+        class1_btn.grid(row=0, column=0, sticky= W + E)
+
+        class2_btn = Button(btn_frame, text=self.class2, command=lambda: self.save(2))
+        class2_btn.grid(row=0, column=1, sticky=W + E)
+
+        class3_btn = Button(btn_frame, text=self.class3, command=lambda: self.save(3))
+        class3_btn.grid(row=0, column=2, sticky=W + E)
+
+        class4_btn = Button(btn_frame, text=self.class4, command=lambda: self.save(4))
+        class4_btn.grid(row=0, column=3, sticky=W + E)
+
+        def paint(self, event):
+            pass
+
+        def save(self):
+            pass
