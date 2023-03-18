@@ -3,7 +3,7 @@ import os.path
 import tkinter.messagebox
 from tkinter import *
 from tkinter import simpledialog, filedialog
-from sklearn.svm import LinearSVC
+
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
@@ -13,9 +13,15 @@ import PIL
 import PIL.Image, PIL.ImageDraw
 import cv2 as cv
 import numpy as np
+from sklearn.svm import SVC
+import joblib
 
-
-class LetterDrawingClassifier:
+DecisionTreeClassifier = joblib.load("DecisionTreeClassifier.joblib")
+KNeighborsClassifier = joblib.load("KNeighborsClassifier.joblib")
+LogisticRegression = joblib.load("LogisticRegression.joblib")
+RandomForestClassifier = joblib.load("RandomForestClassifier.joblib")
+SVC = joblib.load("SVC.joblib")
+class DigitsDrawingClassifier:
 
     def __init__(self):
         self.clf = None
@@ -26,7 +32,7 @@ class LetterDrawingClassifier:
         self.canvas = None
         self.draw = None
 
-        self.brush_width = 20
+        self.brush_width = 75
 
         self.classes_prompt()
         self.initialize_gui()
@@ -38,15 +44,19 @@ class LetterDrawingClassifier:
 
         self.project_name = simpledialog.askstring("Project Name", "Enter Project Name",parent=msg)
 
+        if self.clf == None:
+            self.clf = DecisionTreeClassifier
     def initialize_gui(self):
         width = 600
         height = 600
         canvas_width = 550
-        canvas_height = 400
+        canvas_height = 550
         white = (255,255,255)
 
         self.root = Tk()
         self.root.title(f"LETTER DRAWINGS CLASSIFIER v0.1 - {self.project_name}")
+
+
 
         self.canvas = Canvas(self.root,
                              width=canvas_width,
@@ -72,7 +82,7 @@ class LetterDrawingClassifier:
         psize_button = Button(btn_frame, text="Increase the brush", command=self.increase_brush)
         psize_button.grid(row=0, column=2,columnspan=2, sticky=W + E)
 
-        pred_button = Button(btn_frame, text="Predict letter", command=self.pred)
+        pred_button = Button(btn_frame, text="Predict digits", command=self.pred)
         pred_button.grid(row=1, column=0,columnspan=2,rowspan=2, sticky=W + E)
 
 
@@ -113,36 +123,40 @@ class LetterDrawingClassifier:
     def pred(self):
         self.image1.save("temp.png")
         img = PIL.Image.open("temp.png")
-        img.thumbnail((50, 50), PIL.Image.LANCZOS)
+        img.thumbnail((8, 8), PIL.Image.LANCZOS)
         img.save("predictshape.png", "PNG")
 
         img = cv.imread("predictshape.png")[:, :, 0]
-        img = img.reshape(2500)
+        img = img.reshape(64)
         prediction = self.clf.predict([img])
+        print(prediction)
 
-        if prediction[0] == 1:
-            tkinter.messagebox.showinfo("LETTER DRAWINGS CLASSIFIER", f"The emoticon on drawing is probably a {self.class1}", parent=self.root)
-        elif prediction[0] == 2:
-            tkinter.messagebox.showinfo("LETTER DRAWINGS CLASSIFIER", f"The emoticon on drawing is probably a {self.class2}", parent=self.root)
-        elif prediction[0] == 3:
-            tkinter.messagebox.showinfo("LETTER DRAWINGS CLASSIFIER", f"The emoticon on drawing is probably a {self.class3}", parent=self.root)
-        elif prediction[0] == 3:
-            tkinter.messagebox.showinfo("LETTER DRAWINGS CLASSIFIER", f"The emoticon on drawing is probably a {self.class4}", parent=self.root)
+
 
     def change_model(self):
-        if isinstance(self.clf,DecisionTreeClassifier):
-            self.clf = KNeighborsClassifier()
-        elif isinstance(self.clf, KNeighborsClassifier):
-            self.clf = LogisticRegression()
-        elif isinstance(self.clf, LogisticRegression):
-            self.clf = LinearSVC()
-        elif isinstance(self.clf, LinearSVC):
-            self.clf = RandomForestClassifier()
-        elif isinstance(self.clf, RandomForestClassifier):
-            self.clf = GaussianNB()
-        elif isinstance(self.clf, GaussianNB):
-            self.clf = DecisionTreeClassifier()
-        self.status_label.config(text=f"Current Model: {type(self.clf).__name__}")
+        if self.clf == DecisionTreeClassifier:
+            self.clf = KNeighborsClassifier
+            print(self.clf)
+            model_name =self.clf.__class__.__name__
+        elif self.clf == KNeighborsClassifier:
+            self.clf =  LogisticRegression
+            print(self.clf)
+            model_name = self.clf.__class__.__name__
+        elif self.clf == LogisticRegression:
+            self.clf = RandomForestClassifier
+            print(self.clf)
+            model_name = self.clf.__class__.__name__
+        elif self.clf == RandomForestClassifier:
+            self.clf = SVC
+            print(self.clf)
+            model_name = self.clf.__class__.__name__
+        elif self.clf == SVC:
+            self.clf = DecisionTreeClassifier
+            print(self.clf)
+            model_name = self.clf.__class__.__name__
+
+        model_name = self.clf.__class__.__name__
+        self.status_label.config(text=f"Current Model: {model_name}")
 
     def on_closing(self):
         exit()
@@ -150,4 +164,4 @@ class LetterDrawingClassifier:
     def info(self):
         pass
 
-LetterDrawingClassifier()
+DigitsDrawingClassifier()
