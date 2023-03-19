@@ -1,9 +1,10 @@
 import pickle
 import os.path
+import tensorflow as tf
 import tkinter.messagebox
 from tkinter import *
 from tkinter import simpledialog, filedialog
-
+import matplotlib.pyplot as plt
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
@@ -16,11 +17,8 @@ import numpy as np
 from sklearn.svm import SVC
 import joblib
 
-DecisionTreeClassifier = joblib.load("DecisionTreeClassifier.joblib")
-KNeighborsClassifier = joblib.load("KNeighborsClassifier.joblib")
-LogisticRegression = joblib.load("LogisticRegression.joblib")
-RandomForestClassifier = joblib.load("RandomForestClassifier.joblib")
-SVC = joblib.load("SVC.joblib")
+new_model = tf.keras.models.load_model('epic_num_reader.h5')
+class_names=['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 class DigitsDrawingClassifier:
 
     def __init__(self):
@@ -32,7 +30,7 @@ class DigitsDrawingClassifier:
         self.canvas = None
         self.draw = None
 
-        self.brush_width = 75
+        self.brush_width = 20
 
         self.classes_prompt()
         self.initialize_gui()
@@ -45,12 +43,12 @@ class DigitsDrawingClassifier:
         self.project_name = simpledialog.askstring("Project Name", "Enter Project Name",parent=msg)
 
         if self.clf == None:
-            self.clf = DecisionTreeClassifier
+            self.clf = new_model
     def initialize_gui(self):
         width = 600
         height = 600
-        canvas_width = 550
-        canvas_height = 550
+        canvas_width = 600
+        canvas_height = 600
         white = (255,255,255)
 
         self.root = Tk()
@@ -121,15 +119,25 @@ class DigitsDrawingClassifier:
         self.canvas.delete('all')
         self.draw.rectangle([0,0,1000,1000], fill="white")
     def pred(self):
-        self.image1.save("temp.png")
-        img = PIL.Image.open("temp.png")
-        img.thumbnail((8, 8), PIL.Image.LANCZOS)
-        img.save("predictshape.png", "PNG")
+        self.image1.save("temp.jpg")
+        img = PIL.Image.open("temp.jpg")
+        img.thumbnail((28, 28), PIL.Image.LANCZOS)
+        img.save("predictshape.jpg")
 
-        img = cv.imread("predictshape.png")[:, :, 0]
-        img = img.reshape(64)
-        prediction = self.clf.predict([img])
-        print(prediction)
+
+        # img = cv.imread("predictshape.jpg")[:, :, 0]
+        # img = img.reshape(784)
+
+        img = tf.keras.utils.load_img(
+            "predictshape.jpg", target_size=(28, 28)
+        )
+        img_array = tf.keras.utils.img_to_array(img)
+        img_array = tf.expand_dims(img_array[:, :, 0], 0)
+        predictions = self.clf.predict(img_array)
+        print(predictions)
+        print("The Digits in the picture looks like:"
+              .format(class_names[np.argmax(predictions)]))
+
 
 
 
