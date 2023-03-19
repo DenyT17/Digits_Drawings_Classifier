@@ -11,6 +11,12 @@
 ## Description ❔❓
 In this project I will learn how to build DIGITS DRAWINGS CLASSIFIER. To this purpose I will use TensorFlow 2.0 and Tkinter. 
 
+First I will build basicly GUI using Tkinter. It will be developed with new functionalities.
+
+Using TensorFlow I will try to train model with the best possible classifying accuracy.
+
+
+I will regularly share the results of my work.
 
 
 ## What am I going to learn from this project 🔝 
