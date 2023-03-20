@@ -1,15 +1,11 @@
-
 import tensorflow as tf
 import tkinter.messagebox
 from tkinter import *
-from tkinter import simpledialog, filedialog
-import matplotlib.pyplot as plt
+from tkinter import simpledialog
 import PIL
 import PIL.Image, PIL.ImageDraw
-import cv2 as cv
 import numpy as np
 import cv2
-
 
 class_names=['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 class DigitsDrawingClassifier:
@@ -47,8 +43,6 @@ class DigitsDrawingClassifier:
 
         self.root = Tk()
         self.root.title(f"LETTER DRAWINGS CLASSIFIER v0.1 - {self.project_name}")
-
-
 
         self.canvas = Canvas(self.root,
                              width=canvas_width,

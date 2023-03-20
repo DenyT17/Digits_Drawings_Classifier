@@ -1,7 +1,5 @@
-import numpy as np
+
 import tensorflow as tf
-import os
-import cv2
 import matplotlib.pyplot as plt
 
 # Loading MNIST dataset
@@ -27,14 +25,12 @@ epochs = 20
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 history = model.fit(X_train, y_train,validation_data=(X_test, y_test), epochs=epochs)
 
+# Training result visualization
 acc = history.history['accuracy']
 val_acc = history.history['val_accuracy']
-
 loss = history.history['loss']
 val_loss = history.history['val_loss']
-
 epochs_range = range(epochs)
-
 plt.figure(figsize=(8, 8))
 plt.subplot(1, 2, 1)
 plt.plot(epochs_range, acc, label='Training Accuracy')
