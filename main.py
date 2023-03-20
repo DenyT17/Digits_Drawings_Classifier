@@ -1,21 +1,13 @@
-import pickle
-import os.path
+
 import tensorflow as tf
 import tkinter.messagebox
 from tkinter import *
 from tkinter import simpledialog, filedialog
 import matplotlib.pyplot as plt
-from sklearn.naive_bayes import GaussianNB
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
 import PIL
 import PIL.Image, PIL.ImageDraw
 import cv2 as cv
 import numpy as np
-from sklearn.svm import SVC
-import joblib
 import cv2
 
 
@@ -31,7 +23,7 @@ class DigitsDrawingClassifier:
         self.canvas = None
         self.draw = None
         self.model_name = None
-        self.brush_width = 20
+        self.brush_width = 30
 
         self.classes_prompt()
         self.initialize_gui()
@@ -44,8 +36,8 @@ class DigitsDrawingClassifier:
         self.project_name = simpledialog.askstring("Project Name", "Enter Project Name",parent=msg)
 
         if self.clf == None:
-            self.clf  = tf.keras.models.load_model('models\handwritten_digits.h5')
-            self.model_name = "handwritten_digits.h5"
+            self.clf  = tf.keras.models.load_model('models\MNIST_MODEL.h5')
+            self.model_name = "MNIST_MODEL.h5"
     def initialize_gui(self):
         width = 600
         height = 600
@@ -83,18 +75,15 @@ class DigitsDrawingClassifier:
         psize_button.grid(row=0, column=2,columnspan=2, sticky=W + E)
 
         pred_button = Button(btn_frame, text="Predict digits", command=self.pred)
-        pred_button.grid(row=3, column=0,columnspan=4, sticky=W + E)
+        pred_button.grid(row=1, column=0,columnspan=2, sticky=W + E)
 
         clear_button = Button(btn_frame, text="Clear", command=self.clear)
         clear_button.grid(row=1, column=2, columnspan=2,rowspan=2,sticky=W + E)
 
-        change_button = Button(btn_frame, text="Change model", command=self.change_model)
-        change_button.grid(row=1, column=0,columnspan=2,rowspan=2, sticky=W + E)
-
 
         self.status_label = Label(btn_frame, text=f"Currently selected model: {self.model_name}")
         self.status_label.config(font=("Arial", 10))
-        self.status_label.grid(row=4,column=0,columnspan=4,sticky=W + E)
+        self.status_label.grid(row=3,column=0,columnspan=4,rowspan=4,sticky=W + E)
 
         self.root.protocol("WM_DELETE_WINDOW",self.on_closing)
         self.root.attributes("-topmost",True)
@@ -119,41 +108,17 @@ class DigitsDrawingClassifier:
         self.draw.rectangle([0,0,1000,1000], fill="white")
     def pred(self):
 
-        if self.model_name == "Model10kimg.h5":
-            self.image1.save("temp.jpg")
-            img = PIL.Image.open("temp.jpg")
-            img.thumbnail((256, 256), PIL.Image.LANCZOS)
-            img.save("predictshape.jpg")
-            img = tf.keras.utils.load_img(
-                "predictshape.jpg", target_size=(256, 256)
-            )
-            img_array = tf.keras.utils.img_to_array(img)
-            img_array = tf.expand_dims(img_array, 0)
-            predictions = self.clf.predict(img_array)
-            print(predictions)
-            print("The Digits in the picture looks like:"
-                  .format(class_names[np.argmax(predictions)]))
+        self.image1.save("temp.png")
+        img = PIL.Image.open("temp.png")
+        img.thumbnail((28, 28), PIL.Image.LANCZOS)
+        img.save("predictshape.png")
+        img = cv2.imread('predictshape.png')[:, :, 0]
+        img = np.invert(np.array([img]))
+        prediction = self.clf.predict(img)
+        print("The number is probably a {}".format(np.argmax(prediction)))
+        self.status_label.config(text=f"Last prediction :\n Number is probably a {np.argmax(prediction)}")
 
-        elif self.model_name == "handwritten_digits.h5":
-            self.image1.save("temp.png")
-            img = PIL.Image.open("temp.png")
-            img.thumbnail((28, 28), PIL.Image.LANCZOS)
-            img.save("predictshape.png")
-            img = cv2.imread('predictshape.png')[:, :, 0]
-            img = np.invert(np.array([img]))
-            prediction = self.clf.predict(img)
-            print("The number is probably a {}".format(np.argmax(prediction)))
 
-    def change_model(self):
-
-        if self.model_name == "handwritten_digits.h5":
-            self.clf =tf.keras.models.load_model('models\Model10kimg.h5')
-            self.model_name = 'Model10kimg.h5'
-        elif self.model_name == "Model10kimg.h5":
-            self.clf =tf.keras.models.load_model('models\handwritten_digits.h5')
-            self.model_name = 'handwritten_digits.h5'
-
-        self.status_label.config(text=f"Current Model: {self.model_name}")
 
     def on_closing(self):
         exit()
