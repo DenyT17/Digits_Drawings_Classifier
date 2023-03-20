@@ -32,7 +32,7 @@ I will regularly share the results of my work.
 To train my model I will use [this](https://www.kaggle.com/datasets/ayavariabdi/didadataset?select=250000) dataset.
 
 ## The current result of the work 🔍
-
+At this moment to classifing drawing digits, I use model training on MNIST dataset. In future I will want change this model to one with better accuracy. 
 Currently, the GUI has functionalities such as:
 
 ![image](https://user-images.githubusercontent.com/122997699/226455535-0a306e0a-e064-456e-85d7-1b1256f233eb.png)
@@ -41,3 +41,4 @@ Currently, the GUI has functionalities such as:
 * performing simple mathematical operations on recognized numbers
 
 ## Next goals 🏆⌛
+* 
