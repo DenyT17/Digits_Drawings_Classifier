@@ -1,4 +1,4 @@
-
+from tensorflow import keras
 import tensorflow as tf
 import matplotlib.pyplot as plt
 
@@ -21,9 +21,12 @@ model.add(tf.keras.layers.Dense(units=10, activation=tf.nn.softmax))
 
 
 # Compile and train model
-epochs = 20
-model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+epochs = 10
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
 history = model.fit(X_train, y_train,validation_data=(X_test, y_test), epochs=epochs)
+
 
 # Training result visualization
 acc = history.history['accuracy']
@@ -45,5 +48,6 @@ plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
 plt.show()
 
+
 # Saving the model
-model.save('models/MNIST_MODEL.h5')
+model.save('models/MNIST_MODELt.h5')
