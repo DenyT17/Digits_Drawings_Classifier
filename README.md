@@ -41,4 +41,6 @@ Currently, the GUI has functionalities such as:
 * performing simple mathematical operations on recognized numbers
 
 ## Next goals 🏆⌛
-* 
+
+* Adding new functionaity to GUI
+* Creating a new model with better accuracy
