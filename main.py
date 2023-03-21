@@ -22,7 +22,7 @@ class DigitsDrawingClassifier:
         self.model_name = None
         self.numbers = 0
         self.actual_pred = 0
-        self.brush_width = 30
+        self.brush_width = 50
         self.classes_prompt()
         self.initialize_gui()
 
@@ -36,10 +36,10 @@ class DigitsDrawingClassifier:
             self.model_name = "MNIST_MODEL.h5"
     def initialize_gui(self):
 
-        width = 600
-        height = 600
-        canvas_width = 600
-        canvas_height = 600
+        width = 400
+        height = 400
+        canvas_width = 400
+        canvas_height = 400
         white = (255,255,255)
         self.root = Tk()
         self.root.title(f"LETTER DRAWINGS CLASSIFIER v0.1 - {self.project_name}")
