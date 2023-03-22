@@ -32,7 +32,7 @@ class DigitsDrawingClassifier:
         msg.withdraw()
         self.project_name = simpledialog.askstring("Project Name", "Enter Project Name",parent=msg)
         if self.clf == None:
-            self.clf  = tf.keras.models.load_model('models\MNIST_MODEL.h5')
+            self.clf  = tf.keras.models.load_model(r'models\MNIST_MODEL.h5')
             self.model_name = "MNIST_MODEL.h5"
     def initialize_gui(self):
 
