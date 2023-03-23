@@ -40,7 +40,20 @@ Currently, the GUI has functionalities such as:
 * classification of figures drawings in real time,
 * performing simple mathematical operations on recognized numbers
 
+### Model training results
+
+* NN model with orginal MNIST Dataset
+![MNIST6k](https://user-images.githubusercontent.com/122997699/226937308-15fc430e-4944-4a13-901d-feae91ff6018.png)
+
+* NN model with 240k images
+![MNIST24k](https://user-images.githubusercontent.com/122997699/226940100-853aa5cc-ab9c-4d5f-852f-5c8d1db0e9a4.png)
+
+*KNeighborsClassifier
+
+
+
 ## Next goals 🏆⌛
 
 * Adding new functionaity to GUI
-* Creating a new model with better accuracy
+* Creating a new model with better accuracy thanks to Data Augmetation and Data Preprocesing 
+* Testing models created using Classifiers from Sklearn libraries
