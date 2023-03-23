@@ -11,7 +11,9 @@ mnist = tf.keras.datasets.mnist
 # Data normalization
 X_train = tf.keras.utils.normalize(X_train, axis=1)
 X_test = tf.keras.utils.normalize(X_test, axis=1)
-
+print(X_train.shape)
+print(np.asarray(X_train).shape)
+X_train = np.asarray(X_train).reshape(6000, 28 * 28)
 # Building model
 model = tf.keras.models.Sequential()
 model.add(tf.keras.layers.Flatten())
