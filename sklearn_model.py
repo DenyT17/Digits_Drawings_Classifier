@@ -1,4 +1,3 @@
-from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 import numpy as np
 from sklearn.datasets import fetch_openml
@@ -7,7 +6,6 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import GridSearchCV
 from keras.preprocessing.image import ImageDataGenerator
 import tensorflow as tf
-from tensorflow import keras
 import joblib
 
 # Loading MNIST dataset
@@ -49,5 +47,5 @@ prediction = knn_clf.predict(X_test)
 print(accuracy_score(y_test,prediction))
 
 # Saving model
-filename = "KNN_clf.joblib"
+filename = "models/KNN_clf.joblib"
 joblib.dump(knn_clf, filename)
